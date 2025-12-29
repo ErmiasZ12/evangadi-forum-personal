@@ -11,6 +11,5 @@ app.use(cors()); //middle ware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api/users", userRouter);
-const answerRoutes = require("./routes/answerRoute");
-
+app.use("/api/answer", answerRouter);
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`)); //
