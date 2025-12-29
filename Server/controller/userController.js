@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const pool = require("../../config/dbConfig");
+const pool = require("../db/dbConfig");
 
 /**
  * REGISTER USER
