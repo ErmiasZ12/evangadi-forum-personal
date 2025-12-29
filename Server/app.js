@@ -10,6 +10,8 @@ const answerRouter = require("./routes/answerRoute");
 app.use(cors()); //middle ware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+//routes
 app.use("/api/users", userRouter);
 app.use("/api/answer", answerRouter);
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`)); //
