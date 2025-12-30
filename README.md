@@ -38,13 +38,9 @@ Authentication Middleware:
 Sign-up
 
     Endpoint: /api/user/register
-
     Method: POST
-
     Description: Registers a new user.
-
     Request Body
-
         ●username (string): The username of the user.
 
         ●first_name (string): The first name of the user.
@@ -56,11 +52,8 @@ Sign-up
         ●password (string): The password of the user.
 
     Successful Response 
-
         Status Code: 201 Created
-
         Content-Type: application/json
-        
             {
             "message": "User registered successfully"
             }
