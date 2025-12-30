@@ -18,7 +18,7 @@ app.use(express.json());
 //routes
 app.use("/api/users", userRouter);
 app.use("/api/questions", authMiddleware, questionRoute);
-app.use("/api/answer", answerRouter);
+app.use("/api/answer",authMiddleware, answerRouter);
 app.listen(port, () => console.log(`Listening at http://localhost:${port}`)); //
 
 
