@@ -79,3 +79,40 @@ async function getSingleQuestion(req, res) {
 
 
 module.exports = { getAllQuestions, getSingleQuestion };
+
+async function postQuestion(req, res) {
+  const questionid = crypto.randomBytes(8).toString("hex");
+  const { title, description, tag } = req.body;
+  const userid = req.user.userid;
+
+  if (!title || !description) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "title and description are required" });
+  }
+
+  try {
+    await dbConnection.query(
+      `
+      INSERT INTO questions (questionid, title, description, tag, userid)
+      VALUES (?, ?, ?, ? ,?)
+      `,
+      [questionid, title, description, tag, userid]
+    );
+
+    return res
+      .status(StatusCodes.CREATED)
+      .json({ msg: "Question created successfully" });
+  } catch (error) {
+    console.error(error.message);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server error" });
+  }
+}
+
+module.exports = {
+  getAllQuestions,
+  getSingleQuestion,
+  postQuestion,
+};
