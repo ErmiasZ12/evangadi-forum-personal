@@ -1,5 +1,5 @@
 
-
+const crypto = require("crypto");
 const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
@@ -37,5 +37,45 @@ async function getAllQuestions(req, res) {
   }
 }
 
+async function getSingleQuestion(req, res) {
+  const { question_id } = req.params;
 
-module.exports = { getAllQuestions};
+  if (!question_id) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "question_id is required" });
+  }
+  try {
+    const [[question]] = await dbConnection.query(
+      `
+      SELECT 
+        q.questionid,
+        q.title,
+        q.description,
+        q.tag,
+        u.userid,
+        u.username
+      FROM Questions q
+      JOIN Users u ON q.userid = u.userid
+      WHERE q.questionid = ?
+      `,
+      [question_id]
+    );
+
+    if (!question) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Question not found" });
+    }
+
+    return res.status(StatusCodes.OK).json({ question });
+  } catch (error) {
+    console.error(error.message);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server error" });
+  }
+}
+
+
+module.exports = { getAllQuestions, getSingleQuestion };
