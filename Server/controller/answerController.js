@@ -48,5 +48,35 @@ async function getAnswers(req, res) {
       .json({ msg: "Something went wrong, try again later" });
   }
 }
+async function postAnswer(req, res) {
+  const { questionid, answer, tag } = req.body;
+  const userid = req.user.userid; // from auth middleware
 
-module.exports = { getAnswers };
+  // Validation
+  if (!questionid || !answer) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "questionid and answer are required" });
+  }
+
+  try {
+    // Insert answer
+    await dbConnection.query(
+      `INSERT INTO Answers (questionid, userid, answer, tag)
+       VALUES (?, ?, ?, ?)`,
+      [questionid, userid, answer, tag]
+    );
+
+    // Success response
+    return res.status(StatusCodes.CREATED).json({
+      msg: "Answer posted successfully",
+    });
+  } catch (error) {
+    console.error(error.message);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server error" });
+  }
+}
+
+module.exports = { postAnswer, getAnswers };
