@@ -3,142 +3,75 @@ const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
 /**
- * ================================
- *  GET ALL QUESTIONS  (GET /api/question)
- * ================================
- * Returns:
- *  - Total count
- *  - Array of question objects
- * Includes:
- *  - Username of creator
- *  - Number of answers per question
+ * GET ALL QUESTIONS
  */
 async function getAllQuestions(req, res) {
-  try {
-    const [questions] = await dbConnection.query(
-      `
-      SELECT 
-        q.questionid,
-        q.title,
-        q.description,
-        q.tag,
-        q.userid,
-        u.username,
-        COUNT(a.answerid) AS answerCount
-      FROM questions q
-      JOIN users u ON q.userid = u.userid
-      LEFT JOIN answers a ON q.questionid = a.questionid
-      GROUP BY q.questionid
-      ORDER BY q.questionid DESC
-      `
-    );
+  const [questions] = await dbConnection.query(`
+    SELECT 
+      questions.question_id,
+      questions.title,
+      questions.description,
+      questions.tags,
+      questions.user_id,
+      users.username,
+      COUNT(answers.answer_id) AS answerCount
+    FROM questions
+    INNER JOIN users 
+      ON questions.user_id = users.user_id
+    LEFT JOIN answers 
+      ON questions.question_id = answers.question_id
+    GROUP BY questions.question_id
+    ORDER BY questions.question_id DESC
+  `);
 
-    return res.status(StatusCodes.OK).json({
-      count: questions.length,
-      questions,
-    });
-  } catch (error) {
-    console.error(error.message);
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Server error" });
-  }
+  res.status(StatusCodes.OK).json({
+    count: questions.length,
+    questions,
+  });
 }
 
 /**
- * ================================
- *   GET SINGLE QUESTION (GET /api/question/:question_id)
- * ================================
- * Validation:
- *  - question_id is required
- * Response:
- *  - Question details
- *  - Username of owner
+ * GET SINGLE QUESTION
  */
 async function getSingleQuestion(req, res) {
   const { question_id } = req.params;
 
-  if (!question_id) {
+  const [[question]] = await dbConnection.query(
+    `
+    SELECT 
+      questions.*,
+      users.username
+    FROM questions
+    INNER JOIN users
+      ON questions.user_id = users.user_id
+    WHERE questions.question_id = ?
+    `,
+    [question_id]
+  );
+
+  if (!question) {
     return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "question_id is required" });
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: "Question not found" });
   }
 
-  try {
-    const [[question]] = await dbConnection.query(
-      `
-      SELECT 
-        q.questionid,
-        q.title,
-        q.description,
-        q.tag,
-        u.userid,
-        u.username
-      FROM Questions q
-      JOIN Users u ON q.userid = u.userid
-      WHERE q.questionid = ?
-      `,
-      [question_id]
-    );
-
-    if (!question) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ msg: "Question not found" });
-    }
-
-    return res.status(StatusCodes.OK).json({ question });
-  } catch (error) {
-    console.error(error.message);
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Server error" });
-  }
+  res.status(StatusCodes.OK).json({ question });
 }
 
 /**
- * ================================
- *   CREATE QUESTION (POST /api/question)
- * ================================
- * Requires:
- *  - Authenticated user
- *  - title, description
- * Auto-generate:
- *  - questionid using crypto
+ * POST QUESTION
  */
 async function postQuestion(req, res) {
-  const questionid = crypto.randomBytes(8).toString("hex");
-  const { title, description, tag } = req.body;
-  const userid = req.user.userid; // retrieved from auth middleware
+  const { title, description, tags } = req.body;
+  const user_id = req.user.user_id;
 
-  if (!title || !description) {
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "title and description are required" });
-  }
+  await dbConnection.query(
+    `INSERT INTO questions (user_id, title, description, tags)
+     VALUES (?, ?, ?, ?)`,
+    [user_id, title, description, tags]
+  );
 
-  try {
-    await dbConnection.query(
-      `
-      INSERT INTO questions (questionid, title, description, tag, userid)
-      VALUES (?, ?, ?, ?, ?)
-      `,
-      [questionid, title, description, tag, userid]
-    );
-
-    return res
-      .status(StatusCodes.CREATED)
-      .json({ msg: "Question created successfully" });
-  } catch (error) {
-    console.error(error.message);
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Server error" });
-  }
+  res.status(StatusCodes.CREATED).json({ msg: "Question created" });
 }
 
-module.exports = {
-  getAllQuestions,
-  getSingleQuestion,
-  postQuestion,
-};
+module.exports = { getAllQuestions, getSingleQuestion, postQuestion };
