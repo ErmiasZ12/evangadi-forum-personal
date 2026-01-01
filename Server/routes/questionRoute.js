@@ -1,6 +1,6 @@
-
 const express = require("express");
 const router = express.Router();
+// const authMiddleware = require("../middleware/authMiddleware");
 
 const {
   getAllQuestions,
@@ -8,14 +8,8 @@ const {
   postQuestion,
 } = require("../controller/questionController");
 
-// routes to GET /api/question, check User must be logged in, then calls getAllquestions
-router.get("/", authMiddleware, getAllQuestions);
-
-// GET single question
+router.get("/allQuestions",getAllQuestions);
 router.get("/:question_id", getSingleQuestion);
-
-// POST a question (protected)
-router.post("/post", postQuestion);
-
+router.post("/post",postQuestion);
 
 module.exports = router;

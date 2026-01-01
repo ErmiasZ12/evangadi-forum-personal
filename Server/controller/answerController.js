@@ -1,70 +1,51 @@
 const dbConnection = require("../db/dbConfig");
-const statusCodes = require("http-status-codes");
+const { StatusCodes } = require("http-status-codes");
 
-// ================= GET ANSWERS FOR A QUESTION =================
+/**
+ * GET ANSWERS
+ */
 async function getAnswers(req, res) {
   const { question_id } = req.params;
 
-  // 1️⃣ Validate question_id
-  if (!question_id || isNaN(question_id)) {
-    return res
-      .status(statusCodes.BAD_REQUEST)
-      .json({ msg: "Invalid question_id" });
-  }
+  const [answers] = await dbConnection.query(
+    `
+    SELECT 
+      answers.answer_id,
+      answers.answer,
+      users.username
+    FROM answers
+    INNER JOIN users
+      ON answers.user_id = users.user_id
+    WHERE answers.question_id = ?
+    `,
+    [question_id]
+  );
 
-  try {
-    // 2️⃣ Fetch answers from DB
-    const [answers] = await dbConnection.query(
-      `SELECT 
-         a.answerId, 
-         a.answer, 
-         a.answeredAt, 
-         u.userId, 
-         u.username 
-       FROM answers a
-       JOIN users u ON a.userId = u.userId
-       WHERE a.questionId = ?
-       ORDER BY a.answeredAt ASC`,
-      [question_id]
-    );
-
-    // 3️⃣ If no answers found
-    if (answers.length === 0) {
-      return res
-        .status(statusCodes.NOT_FOUND)
-        .json({ msg: "No answers found for this question" });
-    }
-
-    // 4️⃣ Send response
-    return res.status(statusCodes.OK).json({
-      questionId: parseInt(question_id),
-      totalAnswers: answers.length,
-      answers,
-    });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(statusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Something went wrong, try again later" });
-  }
+  res.status(StatusCodes.OK).json({
+    count: answers.length,
+    answers,
+  });
 }
+
+/**
+ * POST ANSWER
+ */
 async function postAnswer(req, res) {
-  const { questionid, answer, tag } = req.body;
-  const userid = req.user.userid; // from auth middleware
+  const { question_id, answer } = req.body;
+  const user_id = req.user.user_id; // from auth middleware
 
   // Validation
-  if (!questionid || !answer) {
+  if (!question_id || !answer) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "questionid and answer are required" });
+      .json({ msg: "question_id and answer are required" });
   }
-
   try {
     // Insert answer
     await dbConnection.query(
-      `INSERT INTO Answers (questionid, userid, answer, tag)
-       VALUES (?, ?, ?, ?)`,
-      [questionid, userid, answer, tag]
+      `INSERT INTO answers (question_id, user_id, answer)
+     VALUES (?, ?, ?)`,
+      [question_id, user_id, answer]
     );
 
     // Success response
@@ -79,4 +60,4 @@ async function postAnswer(req, res) {
   }
 }
 
-module.exports = { postAnswer, getAnswers };
+module.exports = { getAnswers, postAnswer };
