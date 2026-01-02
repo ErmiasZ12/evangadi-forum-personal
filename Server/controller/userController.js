@@ -23,10 +23,10 @@ async function createUser(req, res) {
       .json({ msg: "Password must be 8+ chars" });
   }
 
-  //1️⃣ Example query to get all admin users
+  //Example query to get all admin users
   // const result = await dbConnection.query("SELECT user_id, email FROM users WHERE role = ?",["admin"]);
 
-  //2️⃣ Sample response from database
+  //Sample response from database
   // result = [
   //   [
   //     { user_id: 1, email: "a@gmail.com" },
@@ -50,9 +50,9 @@ async function createUser(req, res) {
   // [ /* fields metadata */ ]
   // ];
 
-  //3️⃣ Destructuring to get the first array (rows) from result
+  //Destructuring to get the first array (rows) from result
     // const [rows, fields] = await dbConnection.query("SELECT user_id, email FROM users WHERE role = ?",["admin"]);
-  //4️⃣ Destructuring to get the first object (first row) from rows
+  //Destructuring to get the first object (first row) from rows
     // firstUser = rows[0];
     // const [[firstUser]] = await dbConnection.query("SELECT user_id, email FROM users WHERE role = ?",["admin"]);
     // firstUser = { user_id: 1, email: "a@gmail.com" };

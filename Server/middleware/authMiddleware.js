@@ -5,17 +5,17 @@ async function authMiddleware(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
 
-    // 1️⃣ Check header
+    // Check header
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ msg: "Authorization denied" });
     }
 
-    // 2️⃣ Extract token
+    // Extract token
     const token = authHeader.split(" ")[1];
 
-    // 3️⃣ Verify token
+    // Verify token
       // const decodedUserData = jwt.verify(token, process.env.JWT_SECRET);
-          // // 4️⃣ Check user exists
+          // // Check user exists
           // const [[user]] = await dbConnection.query(
           //   "SELECT user_id, username FROM users WHERE user_id = ?",
           //   [user_id]
@@ -32,10 +32,9 @@ async function authMiddleware(req, res, next) {
       //2. Decodes the token payload and returns it.
              // So, decodedUserData = { user_id: 5, username: "evangadiG1User", iat: 1697059200, exp: 1697145600 }
 
-
         // return res.status(200).json({ msg: "User is authenticated", user: { user_id, username } });
 
-    // 5️⃣ Attach user to request
+    // Attach user to request
 
       // create custom property 'user' in req object and set it to user data
       req.user = {
