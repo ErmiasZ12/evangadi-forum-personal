@@ -71,7 +71,7 @@ async function postQuestion(req, res) {
     [user_id, title, description, tags]
   );
 
-  res.status(StatusCodes.CREATED).json({ msg: "Question created" });
+  res.status(StatusCodes.CREATED).json({ msg: "Question created successfully" });
 }
 
 module.exports = { getAllQuestions, getSingleQuestion, postQuestion };
