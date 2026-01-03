@@ -1,42 +1,44 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../assets/evangadi-logo.png'; // Update path to your logo
-import './Header.module.css';
+import logo from '../../assets/evangadi-logo.png';
+import classes from './Header.module.css'; 
 
 const Header = () => {
   const navigate = useNavigate();
-  // We check if a token exists to determine if the user is logged in
+
+  // Retrieve token to check if user is logged in (Session Persistence)
   const token = localStorage.getItem('token');
 
   const handleLogout = () => {
-    // Clear the token and redirect to login/home
+    // Clear the session and redirect
     localStorage.removeItem('token');
     navigate('/login');
-    window.location.reload(); // Refresh to update the UI state
+    // Reloading ensures all components reset to "logged out" state
+    window.location.reload();
   };
 
   return (
-    <nav className="header_container">
-      <div className="header_inner">
+    <nav className={classes.header_container}>
+      <div className={classes.header_inner}>
         {/* Logo Link */}
-        <Link to="/" className="header_logo">
+        <Link to="/" className={classes.header_logo}>
           <img src={logo} alt="Evangadi Logo" />
         </Link>
 
         {/* Navigation Links */}
-        <div className="header_links">
-          <Link to="/" className="nav_link">Home</Link>
-          <Link to="/how-it-works" className="nav_link">How it works</Link>
+        <div className={classes.header_links}>
+          <Link to="/" className={classes.nav_link}>Home</Link>
+          <Link to="/how-it-works" className={classes.nav_link}>How it works</Link>
           
           {token ? (
-            // Show Log Out if token exists
-            <button className="header_button" onClick={handleLogout}>
+            // Show LOG OUT if token exists in localStorage
+            <button className={classes.header_button} onClick={handleLogout}>
               LOG OUT
             </button>
           ) : (
-            // Show Sign In if no token exists
-            <Link to="/login" className="header_button_link">
-              <button className="header_button">SIGN IN</button>
+            // Show SIGN IN if no token is found
+            <Link to="/login" className={classes.header_button_link}>
+              <button className={classes.header_button}>SIGN IN</button>
             </Link>
           )}
         </div>
