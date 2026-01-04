@@ -1,0 +1,74 @@
+.header_container {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+  background: white;
+  /* Making it truly sticky/fixed throughout all pages */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.header_inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.header_logo img {
+  width: 150px;
+  display: block;
+}
+
+.header_links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav_link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav_link:hover {
+  color: #fe8402; /* Evangadi orange */
+}
+
+.header_button {
+  background-color: #516cf0;
+  color: white;
+  border: none;
+  padding: 10px 45px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.header_button:hover {
+  background-color: #3b52c1;
+}
+
+.header_button_link {
+  text-decoration: none;
+}
+
+/* Responsive for Mobile */
+@media (max-width: 768px) {
+  .header_links {
+    gap: 15px;
+  }
+  .nav_link {
+    display: none; /* Consider a burger menu later */
+  }
+  .header_button {
+    padding: 8px 20px;
+  }
+}
