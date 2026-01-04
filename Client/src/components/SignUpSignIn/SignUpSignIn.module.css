@@ -1,4 +1,6 @@
-
+.home_container{
+  margin-top: 30px;
+}
 
 .home_wrapper {
   display: flex;
