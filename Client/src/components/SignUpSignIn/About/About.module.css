@@ -1,0 +1,41 @@
+.about_container {
+  padding: 40px;
+  max-width: 600px;
+  line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #3b455e; /* Darker blue/grey for text */
+}
+
+.about_subtitle {
+  color: #fe8402; /* Brand Orange */
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+.about_title {
+  font-size: 2.5rem;
+  color: #3b455e;
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+.about_content p {
+  margin-bottom: 20px;
+  font-size: 1.05rem;
+  color: #555;
+}
+
+.about_button {
+  background-color: #fe8402;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.about_button:hover {
+  background-color: #e67700;
+}
