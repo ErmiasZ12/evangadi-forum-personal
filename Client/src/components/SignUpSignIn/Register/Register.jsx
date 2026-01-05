@@ -54,9 +54,9 @@ const Register = () => {
 
     try {
       await axios.post("/users/register", {
-        username: userNameDom.current.value,
-        firstname: firstNameDom.current.value,
-        lastname: lastNameDom.current.value,
+        userName: userNameDom.current.value,
+        firstName: firstNameDom.current.value,
+        lastName: lastNameDom.current.value,
         email: emailDom.current.value,
         password: passwordDom.current.value,
       });

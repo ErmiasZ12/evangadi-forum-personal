@@ -1,0 +1,106 @@
+.loginCard {
+  margin-top: 100px;
+  width: 420px;
+  background: #ffffff;
+  padding: 40px 35px;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Signup text */
+.signupText {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.signupText span {
+  color: #f28b25;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Error */
+.error {
+  color: #d9534f;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #f9f9f9;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #5b73f2;
+  background: #fff;
+}
+
+/* Password group */
+.passwordGroup {
+  position: relative;
+}
+
+.eye {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+/* Forgot password */
+.forgot {
+  text-align: right;
+  font-size: 14px;
+  color: #f28b25;
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+
+/* Submit button */
+.submitBtn {
+  width: 100%;
+  padding: 14px;
+  background: #5b73f2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submitBtn:hover {
+  background: #4a63e7;
+}
+
+/* Bottom create account */
+.create {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
+  color: #f28b25;
+  cursor: pointer;
+}
