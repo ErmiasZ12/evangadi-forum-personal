@@ -1,0 +1,31 @@
+.footer {
+  display: flex;
+  justify-content: space-around;
+  background: #3d475a;
+  color: #fff;
+  padding: 40px 80px;
+  flex-wrap: wrap;
+}
+
+.logo_img {
+  height: 45px;
+  margin: auto;
+}
+
+.footer_col h4 {
+  margin-bottom: 15px;
+}
+
+.footer_col p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.socials a {
+  margin: 5px;
+  color: #fff;
+  text-decoration: none;
+}
+.socials a:hover {
+  color: #fe8402; /* Evangadi orange */
+}

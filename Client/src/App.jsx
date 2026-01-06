@@ -6,6 +6,7 @@ import Header from "./components/header/Header";
 import SignInSignIn from "./components/SignUpSignIn/SignUpSignIn";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Footer from "./components/footer/Footer";
 
 /* EXPORT THE CONTEXT */
 export const AppState = createContext();
@@ -61,6 +62,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer />
     </AppState.Provider>
   );
 }
