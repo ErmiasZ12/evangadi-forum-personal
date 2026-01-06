@@ -11,7 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchQuestions() {
-      const { data } = await axiosBase.get("/questions", {
+      const { data } = await axiosBase.get("/questions/allQuestions", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -45,10 +45,12 @@ const Home = () => {
         <div className={styles["question-list"]}>
           {questions.map((q) => (
             <div
-              key={q.questionid}
+            
+              key={q.question_id}
               className={styles["question-item"]}
-              onClick={() => navigate(`/question/${q.questionid}`)}
+              onClick={function () {navigate(`/questions/${q.question_id}`);  console.log(q)}}
             >
+             
               <img src={avatar} alt="avatar" className={styles["avatar-img"]} />
 
               <div className={styles["question-text"]}>

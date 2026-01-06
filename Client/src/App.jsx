@@ -6,6 +6,8 @@ import Header from "./components/header/Header";
 import SignInSignIn from "./components/SignUpSignIn/SignUpSignIn";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import AskQuestion from "./pages/AskQuestion";
+import QuestionDetail from "./pages/Questions";
 
 /* EXPORT THE CONTEXT */
 export const AppState = createContext();
@@ -50,6 +52,15 @@ function App() {
 
         <Route path="/register" element={<SignInSignIn />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/questions/:question_id" element={<QuestionDetail />} />
+        <Route path="/ask" element={
+          <ProtectedRoute>
+            <AskQuestion />
+          </ProtectedRoute>
+        } />
+
+
+
 
         {/* Protected Routes */}
         <Route
