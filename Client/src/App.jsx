@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import AskQuestion from "./pages/AskQuestion";
 import QuestionDetail from "./pages/Questions";
+import Footer from "./components/footer/Footer";
 
 /* EXPORT THE CONTEXT */
 export const AppState = createContext();
@@ -72,6 +73,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer />
     </AppState.Provider>
   );
 }
