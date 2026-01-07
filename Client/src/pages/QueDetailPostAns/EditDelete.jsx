@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosBase from "../../axiosConfig";
+import instance from "../../axiosConfig";
 import styles from "./QueDetailPostAns.module.css";
 
 const EditDelete = ({ question, setQuestion }) => {
@@ -10,27 +10,38 @@ const EditDelete = ({ question, setQuestion }) => {
   const [editTitle, setEditTitle] = useState(question.title);
   const [editDescription, setEditDescription] = useState(question.description);
 
-  const handleEdit = async () => {
-    await axiosBase.put(
+const handleEdit = async () => {
+  try {
+    await instance.put(
       `/questions/${question.question_id}`,
-      { title: editTitle, description: editDescription },
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-    );
+      {title: editTitle,
+        description: editDescription,
+      });
 
-    const res = await axiosBase.get(`/questions/${question.question_id}`);
+    const res = await instance.get(`/questions/${question.question_id}`);
     setQuestion(res.data.question);
     setIsEditing(false);
-  };
+    alert("Question updated successfully");
+  } catch (error) {
+    console.error(error.response || error);
+    alert(error.response?.data?.msg || "Edit failed");
+  }
+};
 
-  const handleDelete = async () => {
-    if (!window.confirm("Delete this question?")) return;
 
-    await axiosBase.delete(`/questions/${question.question_id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
+const handleDelete = async () => {
+  if (!window.confirm("Delete this question?")) return;
 
+  try {
+    await instance.delete(`/questions/${question.question_id}`);
+
+    alert("Question deleted successfully");
     navigate("/");
-  };
+  } catch (error) {
+    console.error(error.response || error);
+    alert(error.response?.data?.msg || "Delete failed");
+  }
+};
 
   return (
     <>

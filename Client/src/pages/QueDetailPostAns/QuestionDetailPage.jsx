@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axiosBase from "../../axiosConfig";
-import styles from "./QueDetailPostAns.module.css";
-
+import instance from "../../axiosConfig";
+import styles from "./QueDetailPostAns.module.css";  
 import EditDelete from "./EditDelete";
 import AnswerList from "./AnswerList";
 import PostAnswerForm from "./PostAnswerForm";
@@ -10,7 +9,7 @@ import PostAnswerForm from "./PostAnswerForm";
 const QuestionDetailPage = () => {
   const { question_id } = useParams();
   const navigate = useNavigate();
-
+  
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
 
@@ -21,14 +20,14 @@ const QuestionDetailPage = () => {
 
   // Fetch single question
   useEffect(() => {
-    axiosBase.get(`/questions/${question_id}`).then((res) => {
+    instance.get(`/questions/${question_id}`).then((res) => {
       setQuestion(res.data.question);
     });
   }, [question_id]);
 
   // Fetch all answers for that question.
   const fetchAnswers = async () => {
-    const res = await axiosBase.get(`/answer/all_answer/${question_id}`);
+    const res = await instance.get(`/answers/${question_id}`);
     setAnswers(res.data.answers || []);
   };
 

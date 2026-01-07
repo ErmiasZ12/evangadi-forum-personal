@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axiosBase from "../../axiosConfig";
+import instance from "../../axiosConfig";
 import styles from "./QueDetailPostAns.module.css";
 
 const PostAnswerForm = ({ question_id, refreshAnswers }) => {
@@ -9,14 +9,20 @@ const PostAnswerForm = ({ question_id, refreshAnswers }) => {
     e.preventDefault();
     if (!postAnswer.trim()) return;
 
-    await axiosBase.post("/answer", {
-      questionid: question_id,
-      answer: postAnswer,
-      tag: "general",
-    });
+    try {
+      const res = await instance.post("/answers/postAnswers", {
+        question_id,
+        answer: postAnswer,
+      });
+       console.log("question_id =", question_id);
 
-    setPostAnswer("");
-    refreshAnswers();
+      alert(res.data.msg); // show success message
+      setPostAnswer("");
+      refreshAnswers();
+    } catch (error) {
+      console.error(error.response);
+      alert(error.response?.data?.msg || "Failed to post answer");
+    }
   };
 
   return (

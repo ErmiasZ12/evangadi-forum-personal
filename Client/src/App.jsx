@@ -9,7 +9,7 @@ import Home from "./pages/Home/Home";
 import AskQuestion from "./pages/AskQuestion/AskQuestion";
 import Footer from "./components/Footer/Footer";
 import QuestionDetailPage from './pages/QueDetailPostAns/QuestionDetailPage'
-import ForgotPassword from './pages/Forgot password/ForgotPassword';
+import ForgotPassword from './pages/Forgotpassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 
 /* EXPORT THE CONTEXT */
@@ -67,10 +67,6 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/questions/:question_id"
-          element={<QuestionDetailPage />}
-        />
 
         {/* prtected routes */}
         <Route
@@ -91,17 +87,17 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-
+          
         <Route
-          path="/question/:question_id"
+          path="/questions/:question_id"
           element={
             <ProtectedRoute>
               <QuestionDetailPage />
             </ProtectedRoute>
           }
         />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetpassword/:token" element={<ResetPassword />} />
       </Routes>
       <Footer />
     </AppState.Provider>
