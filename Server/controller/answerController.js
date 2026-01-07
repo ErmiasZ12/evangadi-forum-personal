@@ -1,9 +1,7 @@
 const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
-/**
- * GET ANSWERS
- */
+//  GET ANSWERS
 async function getAnswers(req, res) {
   const { question_id } = req.params;
 
@@ -27,9 +25,7 @@ async function getAnswers(req, res) {
   });
 }
 
-/**
- * POST ANSWER
- */
+  // POST ANSWER
 async function postAnswer(req, res) {
   const { question_id, answer } = req.body;
   const user_id = req.user.user_id; // from auth middleware
