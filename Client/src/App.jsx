@@ -41,11 +41,14 @@ function App() {
     }
   };
 
+  const publicRoutes = ["/login", "/register", "/forgotpassword"];
+
   useEffect(() => {
-    if (location.pathname !== "/login" && location.pathname !== "/register") {
+    if (!publicRoutes.includes(location.pathname)) {
       checkUser();
     }
   }, [location.pathname]);
+
 
   // Fetch all questions
   const fetchQuestions = async () => {
@@ -57,8 +60,8 @@ function App() {
     }
   };
     useEffect(() => {
-      if (user) fetchQuestions(); // only fetch if logged in user
-    }, [user]);
+      fetchQuestions(); // only fetch if logged in user
+    }, []);
 
   return (
     <AppState.Provider value={{ user, setUser, questions, setQuestions }}>
@@ -96,8 +99,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/resetpassword/:token" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Routes>
       <Footer />
     </AppState.Provider>

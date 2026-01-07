@@ -79,8 +79,13 @@ const SignIn = () => {
             {showPassword ? "🙈" : "👁"}
           </span>
         </div>
-
-        <p className={styles.forgot}>Forgot password?</p>
+        {/* forgot password */}
+        <p
+          className={styles.forgot}
+          onClick={() => navigate("/forgot-password")}
+        >
+          Forgot password?
+        </p>
 
         <button type="submit" className={styles.submitBtn}>
           Login

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axiosBase from "../../axiosConfig";
+import instance from "../../axiosConfig";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -12,7 +12,7 @@ const ResetPassword = () => {
     e.preventDefault();
 
     try {
-      await axiosBase.post(`/users/reset-password/${token}`, {
+      await instance.post(`/users/reset-password/${token}`, {
         password,
       });
 

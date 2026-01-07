@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosBase from "../../axiosConfig";
+import instance from "../../axiosConfig";
 import styles from "./ForgotPassword.module.css";
 
 const ForgotPassword = () => {
@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosBase.post("/users/forgot-password", { email });
+      await instance.post("/users/forgot-password", { email });
       setMessage("Password reset link sent to your email");
     } catch (error) {
       setMessage("Email not found");
