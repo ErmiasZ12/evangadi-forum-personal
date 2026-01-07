@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./askQuestion.module.css";
-import { AppState } from "../App";
-import axiosBase from "../axiosConfig";
+import { AppState } from "../../App";
+import axiosBase from "../../axiosConfig";
 
 const AskQuestion = () => {
   const { user } = useContext(AppState);

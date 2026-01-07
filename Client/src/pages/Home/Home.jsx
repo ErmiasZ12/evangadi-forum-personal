@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
-import { AppState } from "../App";
-import axiosBase from "../axiosConfig";
-import avatar from "../assets/avatar.png";
+import { AppState } from "../../App";
+import instance from "../../axiosConfig";
+import avatar from "../../assets/avatar.png";
 
 const Home = () => {
   const { user, questions, setQuestions } = useContext(AppState);
@@ -11,7 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchQuestions() {
-      const { data } = await axiosBase.get("/questions/allQuestions", {
+      const { data } = await instance.get("/questions/allQuestions", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

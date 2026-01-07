@@ -2,7 +2,7 @@ import React from "react";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import logofooter from "../../assets/evangadi-logo.png";
+import logofooter from "../../assets/footer-logo.png";
 import classes from "./Footer.module.css";
 
 const Footer = () => {

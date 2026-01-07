@@ -1,14 +1,16 @@
-import { createContext,useState,useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-import axiosBase from "./axiosConfig";
-import Header from "./components/header/Header";
-import SignInSignIn from "./components/SignUpSignIn/SignUpSignIn";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import AskQuestion from "./pages/AskQuestion";
-import QuestionDetail from "./pages/Questions";
-import Footer from "./components/footer/Footer";
+import instance from "./axiosConfig";
+import Header from "./components/Header/Header";
+import Register from "./pages/Register/Register";
+import Login from "./pages/Login/Login";
+import Home from "./pages/Home/Home";
+import AskQuestion from "./pages/AskQuestion/AskQuestion";
+import Footer from "./components/Footer/Footer";
+import QuestionDetailPage from './pages/QueDetailPostAns/QuestionDetailPage'
+import ForgotPassword from './pages/Forgot password/ForgotPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 
 /* EXPORT THE CONTEXT */
 export const AppState = createContext();
@@ -31,7 +33,7 @@ function App() {
     }
 
     try {
-      const { data } = await axiosBase.get("/users/check");
+      const { data } = await instance.get("/users/check");
       setUser(data);
     } catch (error) {
       localStorage.removeItem("token");
@@ -39,29 +41,46 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (location.pathname !== "/login" && location.pathname !== "/register") {
+      checkUser();
+    }
+  }, [location.pathname]);
+
+  // Fetch all questions
+  const fetchQuestions = async () => {
+    try {
+      const { data } = await instance.get("/questions");
+      setQuestions(data.questions); // latest first
+    } catch (err) {
+      console.log(err);
+    }
+  };
     useEffect(() => {
-      if (location.pathname !== "/login" && location.pathname !== "/register") {
-        checkUser();
-      }
-    }, [location.pathname]);
+      if (user) fetchQuestions(); // only fetch if logged in user
+    }, [user]);
 
   return (
     <AppState.Provider value={{ user, setUser, questions, setQuestions }}>
       <Header />
 
       <Routes>
-
-        <Route path="/register" element={<SignInSignIn />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/questions/:question_id" element={<QuestionDetail />} />
-        <Route path="/ask" element={
-          <ProtectedRoute>
-            <AskQuestion />
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/questions/:question_id"
+          element={<QuestionDetailPage />}
+        />
 
-
-
+        {/* prtected routes */}
+        <Route
+          path="/ask"
+          element={
+            <ProtectedRoute>
+              <AskQuestion />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Protected Routes */}
         <Route
@@ -69,6 +88,17 @@ function App() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+        <Route
+          path="/question/:question_id"
+          element={
+            <ProtectedRoute>
+              <QuestionDetailPage />
             </ProtectedRoute>
           }
         />
