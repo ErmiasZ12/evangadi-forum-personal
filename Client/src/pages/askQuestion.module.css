@@ -1,0 +1,105 @@
+/* Container */
+.askContainer {
+  margin-top: 50px;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main content wrapper */
+.main {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Instructions box */
+.instructions {
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.instructions h2 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+.instructions ul {
+  padding-left: 25px;
+  list-style-type: disc;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Form section */
+.formSection {
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.formSection h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+/* Form layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Input fields */
+.input,
+.textarea {
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #0a95ff;
+  box-shadow: 0 0 6px rgba(10, 149, 255, 0.2);
+}
+
+/* Textarea specific */
+.textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+/* Submit button */
+.submitBtn {
+  align-self: flex-start;
+  padding: 12px 22px;
+  background-color: #0a95ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.submitBtn:hover {
+  background-color: #0074cc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
