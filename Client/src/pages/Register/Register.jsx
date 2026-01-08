@@ -1,13 +1,13 @@
 import React from 'react';
-import Classes from './SignUpSignIn.module.css'
-import Register from './Register/Register'
-import About from './About/About'
-const SignUpSignIn = () => {
+import Classes from './Register.module.css'
+import SignUp from '../../components/SignUp/SignUp'
+import About from '../../components/About/About'
+const Register = () => {
   return (
     <section className={Classes.home_container}>
       <div className={Classes.home_wrapper}>
         <div className={Classes.register_column}>
-          <Register />
+          <SignUp />
         </div>
         <div className={Classes.about_column}>
           <About />
@@ -15,6 +15,6 @@ const SignUpSignIn = () => {
       </div>
     </section>
   );
-}
+};
 
-export default SignUpSignIn;
+export default Register;

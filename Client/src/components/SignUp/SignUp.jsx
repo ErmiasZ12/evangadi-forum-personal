@@ -1,7 +1,7 @@
-import axios from "../../../axiosConfig";
+import instance from "../../axiosConfig";
 import React, { useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Classes from "./Register.module.css";
+import Classes from "./SignUp.module.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ const Register = () => {
     if (!validateForm()) return;
 
     try {
-      await axios.post("/users/register", {
+      await instance.post("/users/register", {
         userName: userNameDom.current.value,
         firstName: firstNameDom.current.value,
         lastName: lastNameDom.current.value,

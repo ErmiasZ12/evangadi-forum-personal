@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../../assets/evangadi-logo.png';
+import logo from '../../assets/evangadi-logo.jpeg';
 import classes from './Header.module.css'; 
 
 const Header = () => {

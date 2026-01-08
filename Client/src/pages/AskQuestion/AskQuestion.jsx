@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./askQuestion.module.css";
-import { AppState } from "../App";
-import axiosBase from "../axiosConfig";
+import { AppState } from "../../App";
+import instance from "../../axiosConfig";
 
 const AskQuestion = () => {
   const { user } = useContext(AppState);
@@ -12,7 +12,7 @@ const AskQuestion = () => {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
 
-  // 🔒 Route protection
+  // Route protection
   useEffect(() => {
     if (!user) {
       navigate("/login");
@@ -28,8 +28,8 @@ const AskQuestion = () => {
     }
 
     try {
-      await axiosBase.post(
-        "/questions/questions",
+      await instance.post(
+        "/questions/post",
         {
           title: title.trim(),
           description: description.trim(),
