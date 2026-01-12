@@ -156,7 +156,7 @@ async function forgotPassword(req, res) {
   try {
     // Check if email exists inside db
     const [rows] = await dbConnection.execute(
-      "SELECT user_id, username FROM Users WHERE email = ?",
+      "SELECT user_id, username FROM users WHERE email = ?",
       [email]
     );
 
@@ -172,12 +172,13 @@ async function forgotPassword(req, res) {
 
     // Save token & expiry in DB
     await dbConnection.execute(
-      "UPDATE Users SET reset_token = ?, reset_token_expiry = ? WHERE email = ?",
+      "UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE email = ?",
       [token, resetTokenExpiry, email]
     );
 
-    // Create reset link (change localhost to your frontend URL)
-    const resetLink = `http://localhost:3000/reset-password/${token}`;
+    // Create reset link (use FRONTEND_URL env variable or default to localhost:5173 for Vite)
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const resetLink = `${frontendUrl}/reset-password/${token}`;
 
     // Send email
     const emailSent = await sendEmail(
@@ -214,10 +215,16 @@ async function resetPassword(req, res) {
       .json({ msg: "Please provide a new password" });
   }
 
+  if (password.length < 8) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "Password must be at least 8 characters long" });
+  }
+
   try {
     // Find user with valid token
     const [rows] = await dbConnection.query(
-      "SELECT user_id FROM Users WHERE reset_token = ? AND reset_token_expiry > NOW()",
+      "SELECT user_id FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()",
       [token]
     );
 
@@ -231,7 +238,7 @@ async function resetPassword(req, res) {
 
     // Update password and remove token
     await dbConnection.query(
-      `UPDATE Users
+      `UPDATE users
        SET password = ?, reset_token = NULL, reset_token_expiry = NULL
        WHERE reset_token = ?`,
       [hashedPassword, token]

@@ -5,12 +5,11 @@ import { AppState } from "../../App";
 import instance from "../../axiosConfig";
 
 const AskQuestion = () => {
-  const { user } = useContext(AppState);
+  const { user, fetchQuestions } = useContext(AppState);
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState("");
 
   // Route protection
   useEffect(() => {
@@ -33,7 +32,6 @@ const AskQuestion = () => {
         {
           title: title.trim(),
           description: description.trim(),
-          tags: tags.trim(),
         },
         {
           headers: {
@@ -42,6 +40,10 @@ const AskQuestion = () => {
         }
       );
 
+      // Refresh questions after posting
+      if (fetchQuestions) {
+        await fetchQuestions();
+      }
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -59,7 +61,6 @@ const AskQuestion = () => {
             <li>Write a clear and specific title</li>
             <li>Explain the problem in detail</li>
             <li>Describe what you already tried</li>
-            <li>Add relevant tags</li>
           </ul>
         </section>
 
@@ -81,14 +82,6 @@ const AskQuestion = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className={styles.textarea}
-            />
-
-            <input
-              type="text"
-              placeholder="Tags (comma separated)"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              className={styles.input}
             />
 
             <button type="submit" className={styles.submitBtn}>

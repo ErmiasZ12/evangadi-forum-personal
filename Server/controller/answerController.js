@@ -10,6 +10,7 @@ async function getAnswers(req, res) {
     SELECT 
       answers.answer_id,
       answers.answer,
+      answers.user_id,
       users.username
     FROM answers
     INNER JOIN users
@@ -56,4 +57,69 @@ async function postAnswer(req, res) {
   }
 }
 
-module.exports = { getAnswers, postAnswer };
+// EDIT ANSWER
+// PUT /api/answers/:answer_id
+async function editAnswer(req, res) {
+  const { answer_id } = req.params;
+  const { answer } = req.body;
+  const user_id = req.user.user_id;
+
+  if (!answer) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "Answer is required" });
+  }
+
+  try {
+    const [result] = await dbConnection.query(
+      `UPDATE answers
+       SET answer = ?
+       WHERE answer_id = ? AND user_id = ?`,
+      [answer, answer_id, user_id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(StatusCodes.FORBIDDEN)
+        .json({ msg: "Not allowed to edit this answer" });
+    }
+
+    return res.status(StatusCodes.OK).json({
+      msg: "Answer updated successfully",
+    });
+  } catch (error) {
+    console.error(error.message);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Server error" });
+  }
+}
+
+// DELETE ANSWER
+// DELETE /api/answers/:answer_id
+async function deleteAnswer(req, res) {
+  const { answer_id } = req.params;
+  const user_id = req.user.user_id;
+
+  try {
+    const [result] = await dbConnection.query(
+      "DELETE FROM answers WHERE answer_id = ? AND user_id = ?",
+      [answer_id, user_id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(StatusCodes.FORBIDDEN)
+        .json({ msg: "Not allowed to delete this answer" });
+    }
+
+    res.status(StatusCodes.OK).json({
+      msg: "Answer deleted successfully",
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: "Server error" });
+  }
+}
+
+module.exports = { getAnswers, postAnswer, editAnswer, deleteAnswer };
