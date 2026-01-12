@@ -11,12 +11,16 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchQuestions() {
-      const { data } = await instance.get("/questions/allQuestions", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setQuestions(data.questions);
+      try {
+        const { data } = await instance.get("/questions", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setQuestions(data.questions);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
     }
 
     fetchQuestions();

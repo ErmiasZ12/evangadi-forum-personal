@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import instance from "../../axiosConfig";
 import styles from "./QueDetailPostAns.module.css";
 
-const EditDelete = ({ question, setQuestion }) => {
+const EditDelete = ({ question, setQuestion, user }) => {
   const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -43,6 +43,9 @@ const handleDelete = async () => {
   }
 };
 
+  // Check if current user is the owner of the question
+  const isOwner = user && user.userId === question.user_id;
+
   return (
     <>
       <h1 className={styles.sectionTitle}>Question</h1>
@@ -50,6 +53,7 @@ const handleDelete = async () => {
       {isEditing ? (
         <div className={styles.editBox}>
           <input
+            type="text"
             className={styles.editTitle}
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
@@ -68,10 +72,12 @@ const handleDelete = async () => {
         <>
           <h3 className={styles.questionTitle}>{question.title}</h3>
           <p className={styles.questionDesc}>{question.description}</p>
-          <div className={styles.actionRow}>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={handleDelete}>Delete</button>
-          </div>
+          {isOwner && (
+            <div className={styles.actionRow}>
+              <button onClick={() => setIsEditing(true)}>Edit</button>
+              <button onClick={handleDelete}>Delete</button>
+            </div>
+          )}
         </>
       )}
     </>

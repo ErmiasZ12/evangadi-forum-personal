@@ -41,7 +41,7 @@ function App() {
     }
   };
 
-  const publicRoutes = ["/login", "/register", "/forgotpassword"];
+  const publicRoutes = ["/login", "/register", "/forgot-password", "/reset-password"];
 
   useEffect(() => {
     if (!publicRoutes.includes(location.pathname)) {
@@ -59,12 +59,16 @@ function App() {
       console.log(err);
     }
   };
-    useEffect(() => {
-      fetchQuestions(); // only fetch if logged in user
-    }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && !publicRoutes.includes(location.pathname)) {
+      fetchQuestions();
+    }
+  }, [location.pathname, user]);
 
   return (
-    <AppState.Provider value={{ user, setUser, questions, setQuestions }}>
+    <AppState.Provider value={{ user, setUser, questions, setQuestions, fetchQuestions }}>
       <Header />
 
       <Routes>
