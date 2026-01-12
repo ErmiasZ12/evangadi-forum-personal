@@ -62,13 +62,13 @@ async function getSingleQuestion(req, res) {
   // POST QUESTION
 
 async function postQuestion(req, res) {
-  const { title, description, tags } = req.body;
+  const { title, description } = req.body;
   const user_id = req.user.user_id;
 
   await dbConnection.query(
-    `INSERT INTO questions (user_id, title, description, tags)
-     VALUES (?, ?, ?, ?)`,
-    [user_id, title, description, tags]
+    `INSERT INTO questions (user_id, title, description)
+     VALUES (?, ?, ?)`,
+    [user_id, title, description]
   );
 
   res.status(StatusCodes.CREATED).json({ msg: "Question created successfully" });
@@ -90,8 +90,8 @@ async function editQuestion(req, res) {
   try {
     const [result] = await dbConnection.query(
       `
-      UPDATE Questions
-      SET title = ?, description = ?, updated_at = NOW()
+      UPDATE questions
+      SET title = ?, description = ?
       WHERE question_id = ? AND user_id = ?
       `,
       [title, description, question_id, user_id]
@@ -122,13 +122,13 @@ async function deleteQuestion(req, res) {
 
   try {
     // delete answers first
-    await dbConnection.query("DELETE FROM Answers WHERE question_id = ?", [
+    await dbConnection.query("DELETE FROM answers WHERE question_id = ?", [
       question_id,
     ]);
 
     // delete question
     const [result] = await dbConnection.query(
-      "DELETE FROM Questions WHERE question_id = ? AND user_id = ?",
+      "DELETE FROM questions WHERE question_id = ? AND user_id = ?",
       [question_id, user_id]
     );
 
