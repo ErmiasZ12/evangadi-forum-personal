@@ -50,7 +50,7 @@ const Home = () => {
           </h3>
         </div>
 
-        {/* 🔍 SEARCH INPUT */}
+        {/* SEARCH INPUT */}
         <input
           type="text"
           placeholder="Search questions..."
@@ -62,22 +62,34 @@ const Home = () => {
         <h2 className={styles["questions-title"]}>Questions</h2>
 
         <div className={styles["question-list"]}>
-          {questions.map((q) => (
-            <div
-              key={q.question_id}
-              className={styles["question-item"]}
-              onClick={() => navigate(`/questions/${q.question_id}`)}
-            >
-              <img src={avatar} alt="avatar" className={styles["avatar-img"]} />
+          {questions.length > 0 ? (
+            questions.map((q) => (
+              <div
+                key={q.question_id}
+                className={styles["question-item"]}
+                onClick={() => navigate(`/questions/${q.question_id}`)}
+              >
+                <img
+                  src={avatar}
+                  alt="avatar"
+                  className={styles["avatar-img"]}
+                />
 
-              <div className={styles["question-text"]}>
-                <p>{q.title}</p>
-                <small>{q.username}</small>
+                <div className={styles["question-text"]}>
+                  <p>{q.title}</p>
+                  <small>{q.username}</small>
+                </div>
+
+                <div className={styles.arrow}>›</div>
               </div>
-
-              <div className={styles.arrow}>›</div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p
+              style={{ textAlign: "center", marginTop: "20px", color: "#555" }}
+            >
+              No results found.
+            </p>
+          )}
         </div>
       </div>
     </div>
