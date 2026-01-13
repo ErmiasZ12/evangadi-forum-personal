@@ -7,7 +7,7 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import AskQuestion from "./pages/AskQuestion/AskQuestion";
-import Footer from "./components/Footer/Footer";
+import Footer from "./components/footer/Footer";
 import QuestionDetailPage from './pages/QueDetailPostAns/QuestionDetailPage'
 import ForgotPassword from './pages/Forgotpassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
