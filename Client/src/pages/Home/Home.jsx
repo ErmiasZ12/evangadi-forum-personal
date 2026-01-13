@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
 import { AppState } from "../../App";
@@ -9,26 +9,33 @@ const Home = () => {
   const { user, questions, setQuestions } = useContext(AppState);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetchQuestions() {
-      try {
-        const { data } = await instance.get("/questions", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        setQuestions(data.questions);
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-      }
-    }
+  const [search, setSearch] = useState("");
 
+  async function fetchQuestions(searchTerm = "") {
+    try {
+      const { data } = await instance.get(`/questions?search=${searchTerm}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setQuestions(data.questions);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  }
+
+  useEffect(() => {
     fetchQuestions();
-  }, [setQuestions]);
+  }, []);
+
+  function handleSearch(e) {
+    const value = e.target.value;
+    setSearch(value);
+    fetchQuestions(value);
+  }
 
   return (
     <div className={styles["home-container"]}>
-      {/* Main Content */}
       <div className={styles.content}>
         <div className={styles["top-bar"]}>
           <button
@@ -43,18 +50,24 @@ const Home = () => {
           </h3>
         </div>
 
+        {/* 🔍 SEARCH INPUT */}
+        <input
+          type="text"
+          placeholder="Search questions..."
+          value={search}
+          onChange={handleSearch}
+          className={styles.search}
+        />
+
         <h2 className={styles["questions-title"]}>Questions</h2>
 
-        {/* Questions List */}
         <div className={styles["question-list"]}>
           {questions.map((q) => (
             <div
-            
               key={q.question_id}
               className={styles["question-item"]}
-              onClick={function () {navigate(`/questions/${q.question_id}`);  console.log(q)}}
+              onClick={() => navigate(`/questions/${q.question_id}`)}
             >
-             
               <img src={avatar} alt="avatar" className={styles["avatar-img"]} />
 
               <div className={styles["question-text"]}>
