@@ -2,7 +2,6 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   padding: 15px 0;
   background: white;
-  /* Making it truly sticky/fixed throughout all pages */
   position: fixed;
   top: 0;
   left: 0;
@@ -38,7 +37,7 @@
 }
 
 .nav_link:hover {
-  color: #fe8402; /* Evangadi orange */
+  color: #fe8402;
 }
 
 .header_button {
@@ -60,15 +59,94 @@
   text-decoration: none;
 }
 
+/* Hamburger Menu Styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+  z-index: 1001;
+}
+
+.hamburger_line {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  transition: 0.3s;
+}
+
+/* Mobile Navigation Menu */
+.mobile_nav {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.mobile_nav.open {
+  display: flex;
+}
+
+.mobile_nav_link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  transition: color 0.3s;
+}
+
+.mobile_nav_link:hover {
+  color: #fe8402;
+}
+
+.mobile_nav_button {
+  margin-top: 15px;
+  width: 100%;
+}
+
 /* Responsive for Mobile */
 @media (max-width: 768px) {
-  .header_links {
-    gap: 15px;
+  .header_links .nav_link {
+    display: none;
   }
-  .nav_link {
-    display: none; /* Consider a burger menu later */
+  
+  .header_links .header_button {
+    display: none;
   }
-  .header_button {
-    padding: 8px 20px;
+  
+  .header_links .header_button_link {
+    display: none;
+  }
+  
+  .hamburger {
+    display: flex;
+  }
+  
+  .mobile_nav {
+    display: none;
+  }
+  
+  .mobile_nav.open {
+    display: flex;
+  }
+  
+  /* Hamburger animation when open */
+  .hamburger.open .hamburger_line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .hamburger.open .hamburger_line:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger.open .hamburger_line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
   }
 }

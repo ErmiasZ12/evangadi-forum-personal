@@ -15,13 +15,13 @@ const Footer = () => {
           className={classes.logo_img}
         />
         <div className={classes.socials}>
-          <a href="#">
+          <a href="https://www.facebook.com/evangaditech" target="_blank" rel="noreferrer">
             <FacebookOutlinedIcon />
           </a>
-          <a href="#">
+          <a href="https://www.instagram.com/evangaditech/" target="_blank" rel="noreferrer">
             <InstagramIcon />
           </a>
-          <a href="#">
+          <a href="https://www.youtube.com/@EvangadiTech" target="_blank" rel="noreferrer">
             <YouTubeIcon />
           </a>
         </div>

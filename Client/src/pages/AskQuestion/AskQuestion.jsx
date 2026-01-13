@@ -10,6 +10,7 @@ const AskQuestion = () => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState(""); // ADDED: tags state
 
   // Route protection
   useEffect(() => {
@@ -21,8 +22,9 @@ const AskQuestion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !description.trim()) {
-      alert("Title and description are required");
+    // Validation: Checking if all fields are filled
+    if (!title.trim() || !description.trim() || !tags.trim()) {
+      alert("All fields (Title, Description, and Tags) are required");
       return;
     }
 
@@ -32,6 +34,7 @@ const AskQuestion = () => {
         {
           title: title.trim(),
           description: description.trim(),
+          tags: tags.trim(), // ADDED: sending tags as a string
         },
         {
           headers: {
@@ -40,14 +43,14 @@ const AskQuestion = () => {
         }
       );
 
-      // Refresh questions after posting
+      // Refresh questions list on the home page after successful post
       if (fetchQuestions) {
         await fetchQuestions();
       }
       navigate("/");
     } catch (error) {
       console.error(error);
-      alert("Failed to post question");
+      alert(error.response?.data?.msg || "Failed to post question");
     }
   };
 
@@ -61,6 +64,7 @@ const AskQuestion = () => {
             <li>Write a clear and specific title</li>
             <li>Explain the problem in detail</li>
             <li>Describe what you already tried</li>
+            <li>Add tags (e.g., javascript, react, node)</li>
           </ul>
         </section>
 
@@ -82,6 +86,15 @@ const AskQuestion = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className={styles.textarea}
+            />
+
+            {/* ADDED: Tags Input Field */}
+            <input
+              type="text"
+              placeholder="Tags (comma separated: react, node, sql)"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              className={styles.input}
             />
 
             <button type="submit" className={styles.submitBtn}>
