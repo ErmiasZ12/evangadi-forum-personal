@@ -2,11 +2,11 @@ const crypto = require("crypto");
 const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
-
-//  GET ALL QUESTIONS
-
+// GET ALL QUESTIONS (with optional search filter)
 async function getAllQuestions(req, res) {
-  const [questions] = await dbConnection.query(`
+  const { search } = req.query;
+
+  let query = `
     SELECT 
       questions.question_id,
       questions.title,
@@ -20,9 +20,25 @@ async function getAllQuestions(req, res) {
       ON questions.user_id = users.user_id
     LEFT JOIN answers 
       ON questions.question_id = answers.question_id
+  `;
+
+  let values = [];
+
+  // 🔍 FILTER ONLY WHEN SEARCH EXISTS
+  if (search) {
+    query += `
+      WHERE questions.title LIKE ? 
+      OR questions.description LIKE ?
+    `;
+    values.push(`%${search}%`, `%${search}%`);
+  }
+
+  query += `
     GROUP BY questions.question_id
     ORDER BY questions.question_id DESC
-  `);
+  `;
+
+  const [questions] = await dbConnection.query(query, values);
 
   res.status(StatusCodes.OK).json({
     count: questions.length,
@@ -30,9 +46,7 @@ async function getAllQuestions(req, res) {
   });
 }
 
-
-  // GET SINGLE QUESTION
- 
+// GET SINGLE QUESTION
 async function getSingleQuestion(req, res) {
   const { question_id } = req.params;
 
@@ -58,9 +72,7 @@ async function getSingleQuestion(req, res) {
   res.status(StatusCodes.OK).json({ question });
 }
 
-
-  // POST QUESTION
-
+// POST QUESTION
 async function postQuestion(req, res) {
   const { title, description } = req.body;
   const user_id = req.user.user_id;
@@ -71,11 +83,12 @@ async function postQuestion(req, res) {
     [user_id, title, description]
   );
 
-  res.status(StatusCodes.CREATED).json({ msg: "Question created successfully" });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ msg: "Question created successfully" });
 }
 
 // EDIT QUESTION
-// PUT /api/questions/:question_id
 async function editQuestion(req, res) {
   const { question_id } = req.params;
   const { title, description } = req.body;
@@ -115,18 +128,15 @@ async function editQuestion(req, res) {
 }
 
 // DELETE QUESTION
-// DELETE /api/questions/:question_id
 async function deleteQuestion(req, res) {
   const { question_id } = req.params;
   const user_id = req.user.user_id;
 
   try {
-    // delete answers first
     await dbConnection.query("DELETE FROM answers WHERE question_id = ?", [
       question_id,
     ]);
 
-    // delete question
     const [result] = await dbConnection.query(
       "DELETE FROM questions WHERE question_id = ? AND user_id = ?",
       [question_id, user_id]
@@ -143,13 +153,11 @@ async function deleteQuestion(req, res) {
     });
   } catch (error) {
     console.error(error.message);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ msg: "Server error" });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: "Server error" });
   }
 }
 
-
-module.exports = { 
+module.exports = {
   getAllQuestions,
   getSingleQuestion,
   postQuestion,
