@@ -1,0 +1,35 @@
+.home_container{
+  margin-top: 30px;
+}
+
+.home_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 50px;
+  padding: 0 20px;
+}
+
+.register_column {
+  flex: 1;
+  max-width: 500px;
+  background-color: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.about_column {
+  flex: 1;
+  max-width: 550px;
+}
+
+/* Responsive adjustment for mobile */
+@media (max-width: 768px) {
+  .home_wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}
