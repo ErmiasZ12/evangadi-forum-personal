@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import instance from "./axiosConfig";
-import Header from "./components/Header/Header";
+import Header from "./components/header/Header";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
