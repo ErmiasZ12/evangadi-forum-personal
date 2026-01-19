@@ -16,9 +16,10 @@ const dbConnection = mysql.createPool({
     console.log("✅ Database Connection Status:", result[0].message);
     console.log(`📡 Connected to: ${process.env.DB_NAME} at ${process.env.DB_HOST}`);
   } catch (err) {
-    console.error("❌ Database Connection Failed!");
-    console.error("Reason:", err.message);
-   }
+    console.error(" Database Connection Failed!");
+    // console.error("Reason:", err.message);
+     console.error(err);
+  }
 })();
 
 module.exports = dbConnection;
